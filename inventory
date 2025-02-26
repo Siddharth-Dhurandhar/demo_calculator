@@ -1,3 +1,2 @@
 [localhost]
-localhost ansible_python_interpreter=/usr/bin/python3
-localhost ansible_connection=ssh ansible_user=jenkins
+localhost ansible_connection=ssh ansible_user=siddharth-dhurandhar

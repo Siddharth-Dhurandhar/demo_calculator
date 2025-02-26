@@ -28,30 +28,27 @@
 #     - name: Running container
 #       shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
 
-# chatgpt wala playbook from here:-
----
-- name: Deploy Docker Container
+# girish wala playbook from here:-
+- name: Deploy Calculator Container Using Docker CLI
   hosts: localhost
-  remote_user: jenkins
-  become: false
+  remote_user: siddharth-dhurandhar
+  become: yes
+ # gather_facts: no
   tasks:
+    - name: Pull the latest Docker image from Docker Hub
+      shell: docker pull siddharth610/calculator
+      register: pull_result
+      changed_when: "'Downloaded newer image' in pull_result.stdout or 'Pull complete' in pull_result.stdout"
 
-    - name: Set Docker API environment
-      shell: export DOCKER_HOST=unix:///var/run/docker.sock
-
-    - name: Pull Docker Image from Docker Hub
-      docker_image:
-        name: "siddharth610/calculator"
-        source: pull
-      register: docker_pull_result
-
-    - name: Display Docker Pull Result
+    - name: Display Pull Result
       debug:
-        var: docker_pull_result
+        var: pull_result.stdout
 
-    - name: Remove existing container if running
-      shell: docker rm -f calculator || true
-      ignore_errors: true  # Ignore if the container does not exist
-
-    - name: Run the Calculator container
+    - name: Run the Docker container
       shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
+      register: run_result
+      changed_when: "'Error' not in run_result.stdout"
+
+    - name: Display Container Run Result
+      debug:
+        var: run_result.stdout

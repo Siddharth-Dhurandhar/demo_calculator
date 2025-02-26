@@ -1,14 +1,42 @@
+# ---
+# - name: Pull Docker Image from Docker Hub
+#   hosts: localhost
+#   remote_user: siddharth-dhurandhar
+#   become: false
+#   tasks:
+
+#     # - name: Install Python Docker SDK
+#     #   pip:
+#     #     name: docker
+#     #     executable: pip3
+
+#     - name: Pull Docker Image
+#       docker_image:
+#         name: "siddharth610/calculator"
+#         source: pull
+#       register: docker_pull_result
+
+#     - name: Display Docker Pull Result
+#       debug:
+#         var: docker_pull_result
+        
+#     - name: Start Docker service
+#       service:
+#         name: docker
+#         state: started
+
+#     - name: Running container
+#       shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
+
+# chatgpt wala playbook from here:-
 ---
 - name: Pull Docker Image from Docker Hub
   hosts: localhost
   remote_user: siddharth-dhurandhar
   become: false
+  environment:
+    DOCKER_HOST: "unix:///var/run/docker.sock"
   tasks:
-
-    # - name: Install Python Docker SDK
-    #   pip:
-    #     name: docker
-    #     executable: pip3
 
     - name: Pull Docker Image
       docker_image:
@@ -27,3 +55,4 @@
 
     - name: Running container
       shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
+

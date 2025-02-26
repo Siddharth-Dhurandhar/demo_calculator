@@ -5,6 +5,7 @@ pipeline {
    }
     environment {
         DOCKER_IMAGE_NAME = 'calculator'
+        DOCKER_HUB_USERNAME = 'siddharth610'
         GITHUB_REPO_URL = 'https://github.com/Siddharth-Dhurandhar/demo_calculator.git'
     }
 

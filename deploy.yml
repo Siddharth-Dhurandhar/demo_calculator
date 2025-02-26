@@ -30,15 +30,22 @@
 
 # chatgpt wala playbook from here:-
 ---
-- name: Pull Docker Image from Docker Hub
+- name: Deploy Docker Container
   hosts: localhost
-  remote_user: siddharth-dhurandhar
-  become: yes
-  environment:
-    DOCKER_HOST: "unix:///var/run/docker.sock"
+  remote_user: jenkins
+  become: false
   tasks:
 
-    - name: Pull Docker Image
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+      become: true  # Requires root access
+
+    - name: Set Docker API environment
+      shell: export DOCKER_HOST=unix:///var/run/docker.sock
+
+    - name: Pull Docker Image from Docker Hub
       docker_image:
         name: "siddharth610/calculator"
         source: pull
@@ -47,12 +54,10 @@
     - name: Display Docker Pull Result
       debug:
         var: docker_pull_result
-        
-    - name: Start Docker service
-      service:
-        name: docker
-        state: started
 
-    - name: Running container
+    - name: Remove existing container if running
+      shell: docker rm -f calculator || true
+      ignore_errors: true  # Ignore if the container does not exist
+
+    - name: Run the Calculator container
       shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
-

@@ -5,13 +5,13 @@
   become: false
   tasks:
 
-    # - name: Install Python Docker SDK
-    #   pip:
-    #     name: docker
-    #     executable: pip3
+    - name: Install Python Docker SDK
+      pip:
+        name: docker
+        executable: pip3
 
     - name: Pull Docker Image
-      docker_image:
+      community.docker.docker_image:
         name: "siddharth610/calculator"
         source: pull
       register: docker_pull_result

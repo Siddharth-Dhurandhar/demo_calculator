@@ -11,7 +11,7 @@
     #     executable: pip3
 
     - name: Pull Docker Image
-      community.docker.docker_image:
+      docker_image:
         name: "siddharth610/calculator"
         source: pull
       register: docker_pull_result

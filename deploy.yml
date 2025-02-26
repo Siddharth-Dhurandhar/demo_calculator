@@ -5,10 +5,16 @@
   become: false
   tasks:
 
+    # - name: Install Python Docker SDK
+    #   pip:
+    #     name: docker
+    #     executable: pip3
+
     - name: Install Python Docker SDK
-      pip:
-        name: docker
-        executable: pip3
+      apt:
+        name: python3-docker
+        state: present
+      become: true  # Run as sudo
 
     - name: Pull Docker Image
       docker_image:

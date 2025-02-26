@@ -10,12 +10,6 @@
     #     name: docker
     #     executable: pip3
 
-    - name: Install Python Docker SDK
-      apt:
-        name: python3-docker
-        state: present
-      become: true  # Run as sudo
-
     - name: Pull Docker Image
       docker_image:
         name: "siddharth610/calculator"

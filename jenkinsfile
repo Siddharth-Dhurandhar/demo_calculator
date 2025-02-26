@@ -31,8 +31,8 @@ pipeline {
             steps {
                 script{
                     withCredentials([string(credentialsId: 'DockerHubCred', variable: 'DOCKER_HUB_PASSWORD')]) {
-                        sh 'docker tag calculator girish445g/calculator:latest'
-                        sh 'docker push girish445g/calculator'
+                        sh 'docker tag calculator siddharth610/calculator:latest'
+                        sh 'docker push siddharth610/calculator'
                     }
                  }
             }

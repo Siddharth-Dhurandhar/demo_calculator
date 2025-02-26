@@ -44,9 +44,10 @@ pipeline {
         stage('Run Ansible Playbook') { 
             steps {
                 script {
-                    sh '''
-                    ansible-playbook -i inventory.ini deploy.yml --extra-vars "ansible_become_pass=${ANSIBLE_BECOME_PASS} ansible_ssh_pass=${ANSIBLE_SSH_PASS}"
-                    '''
+                    ansiblePlaybook(
+                        playbook: 'deploy.yml',
+                        inventory: 'inventory'
+                    )
                 }
             }
         }

@@ -34,7 +34,7 @@
   hosts: localhost
   remote_user: siddharth-dhurandhar
   become: yes
-- tasks:
+  tasks:
     - name: Pull the latest Docker image from Docker Hub
       shell: docker pull siddharth610/calculator
       register: pull_result

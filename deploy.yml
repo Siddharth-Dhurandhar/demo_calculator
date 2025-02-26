@@ -34,21 +34,21 @@
   hosts: localhost
   remote_user: siddharth-dhurandhar
   become: yes
-  tasks:
-    - name: Pull Docker Image
-      docker_image:
-        name: "siddharth610/calculator"
-        source: pull
-      register: docker_pull_result
-
-    - name: Display Docker Pull Result
-      debug:
-        var: docker_pull_result
+        tasks:
+            - name: Pull the latest Docker image from Docker Hub
+              shell: docker pull siddharth610/calculator
+              register: pull_result
+              changed_when: "'Downloaded newer image' in pull_result.stdout or 'Pull complete' in pull_result.stdout"
         
-    - name: Start Docker service
-      service:
-        name: docker
-        state: started
+            - name: Display Pull Result
+              debug:
+                var: pull_result.stdout
         
-    - name: Running container
-      shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
+            - name: Run the Docker container
+              shell: docker run -it -d --name calculator siddharth610/calculator /bin/bash
+              register: run_result
+              changed_when: "'Error' not in run_result.stdout"
+        
+            - name: Display Container Run Result
+              debug:
+                var: run_result.stdout

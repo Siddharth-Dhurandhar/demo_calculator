@@ -33,7 +33,7 @@
 - name: Pull Docker Image from Docker Hub
   hosts: localhost
   remote_user: siddharth-dhurandhar
-  become: false
+  become: yes
   environment:
     DOCKER_HOST: "unix:///var/run/docker.sock"
   tasks:

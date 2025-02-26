@@ -32,7 +32,7 @@
 - name: Deploy Calculator Container Using Docker CLI
   hosts: localhost
   remote_user: siddharth-dhurandhar
-  become: yes
+  become: false
  # gather_facts: no
   tasks:
     - name: Pull the latest Docker image from Docker Hub

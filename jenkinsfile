@@ -1,8 +1,9 @@
 pipeline {
     agent any
     triggers { 
-      githubPush() 
-   }
+        githubPush() 
+    }
+    
     environment {
         DOCKER_IMAGE_NAME = 'calculator'
         DOCKER_HUB_USERNAME = 'siddharth610'
@@ -28,32 +29,31 @@ pipeline {
             }
         }
 
-        stage('Push Docker Images') {
+        stage('Push Docker Image') {
             steps {
-                script{
+                script {
                     withCredentials([string(credentialsId: 'DockerHubCred', variable: 'DOCKER_HUB_PASSWORD')]) {
                         sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
-                        sh 'docker tag calculator siddharth610/calculator:latest'
-                        sh 'docker push siddharth610/calculator'
+                        sh 'docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest'
+                        sh 'docker push ${DOCKER_HUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest'
                     }
-                 }
+                }
             }
         }
 
-     stage('Run Ansible Playbook') { 
-        steps {
-            script {
-                withCredentials([
-                    string(credentialsId: 'LOCALPASS', variable: 'ANSIBLE_BECOME_PASS'),
-                    string(credentialsId: 'LOCALPASS', variable: 'ANSIBLE_SSH_PASS')
-                ]) {
-                    sh '''
-                    ansible-playbook -i inventory.ini deploy.yml --extra-vars "ansible_become_pass=${ANSIBLE_BECOME_PASS} ansible_ssh_pass=${ANSIBLE_SSH_PASS}"
-                    '''
+        stage('Run Ansible Playbook') { 
+            steps {
+                script {
+                    withCredentials([
+                        string(credentialsId: 'LOCALPASS', variable: 'ANSIBLE_BECOME_PASS'),
+                        string(credentialsId: 'LOCALPASS', variable: 'ANSIBLE_SSH_PASS')
+                    ]) {
+                        sh '''
+                        ansible-playbook -i inventory.ini deploy.yml --extra-vars "ansible_become_pass=${ANSIBLE_BECOME_PASS} ansible_ssh_pass=${ANSIBLE_SSH_PASS}"
+                        '''
+                    }
                 }
             }
         }
     }
- }
-}
 }

@@ -36,12 +36,6 @@
   become: false
   tasks:
 
-    - name: Ensure Docker service is running
-      service:
-        name: docker
-        state: started
-      become: true  # Requires root access
-
     - name: Set Docker API environment
       shell: export DOCKER_HOST=unix:///var/run/docker.sock
 
